@@ -1,5 +1,6 @@
 ﻿@page "/blog"
 @using Client.Components.Public.Shared
+@using Client.Components.Public.Blog
 
 <Navbar />
 
@@ -12,40 +13,17 @@
              <div class="row">
                 @* CARD 1 *@
                 <div class="col-md-4">
-                    <div class="card shadow mb-2">
-                        <img src="assets/img/other/placeholder.jpg" class="card-img-top" alt="Category thumbnail image" />
-                        <div class="card-body">
-                            <h3 class="card-title">Category name</h3>
-                            <p class="card-text">Category description</p>
-                        </div>
-                        <a href="/" class="btn btn-primary stretched-link">View posts</a>
-                    </div>
+                    <CategoryCard />
                 </div>
                 @* CARD 2 *@
                 <div class="col-md-4">
-                    <div class="card shadow mb-2">
-                        <img src="assets/img/other/placeholder.jpg" class="card-img-top" alt="Category thumbnail image" />
-                        <div class="card-body">
-                            <h3 class="card-title">Category name</h3>
-                            <p class="card-text">Category description</p>
-                        </div>
-
-                        <a href="/" class="btn btn-primary stretched-link">View posts</a>
-                    </div>
+                    <CategoryCard />
                 </div>
                 @* CARD 3 *@
                 <div class="col-md-4">
-                    <div class="card shadow mb-2">
-                        <img src="assets/img/other/placeholder.jpg" class="card-img-top" alt="Category thumbnail image" />
-                        <div class="card-body">
-                            <h3 class="card-title">Category name</h3>
-                            <p class="card-text">Category description</p>
-                        </div>
-
-                        <a href="/" class="btn btn-primary stretched-link">View posts</a>
-                    </div>
+                    <CategoryCard />
                 </div>
-            </div>
+            </div> @* End row *@
         </div>
     </div>
 </main>
