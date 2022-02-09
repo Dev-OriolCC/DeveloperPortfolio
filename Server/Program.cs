@@ -1,9 +1,24 @@
+using Server.Data;
+using Microsoft.EntityFrameworkCore.Sqlite;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// CONFIGURE FOR SQLITE
+builder.Services.AddDbContext<AppDBContext>(options =>
+    // Point to appsettings configuration
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); // THIS IS THE WAY
+// Tested from https://docs.microsoft.com/en-us/ef/core/dbcontext-configuration/
+
+//----
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// New - Routting and controllers :D
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -15,29 +30,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+// Added static files
+app.UseStaticFiles();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateTime.Now.AddDays(index),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
 
 app.Run();
 
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

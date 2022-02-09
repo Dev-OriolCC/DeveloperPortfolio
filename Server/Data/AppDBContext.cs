@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 
+
 namespace Server.Data
 {
     public class AppDBContext : DbContext
@@ -19,7 +20,7 @@ namespace Server.Data
             {
                 categoriesToSeed[i] = new Category
                 {
-                    CategoryID = i,
+                    CategoryID = i+39,
                     BlogImage = "uploads/placeholder.jpg",
                     Name = $"Category number: {i}",
                     Description = $"Description for category number {i}",
