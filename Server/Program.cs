@@ -4,22 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
+// Add Controllers
+builder.Services.AddControllers();
 // CONFIGURE FOR SQLITE
 builder.Services.AddDbContext<AppDBContext>(options =>
     // Point to appsettings configuration
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); // THIS IS THE WAY
-// Tested from https://docs.microsoft.com/en-us/ef/core/dbcontext-configuration/
-
-//----
+// Other configs....
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// New - Routting and controllers :D
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddControllers();
 
+// Convert route endpoints to lowercase.
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+// ----------- [BUILD CONFIGURATION MANTAIN IN APP] -----------
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,8 +29,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 // Added static files
 app.UseStaticFiles();
+// Example returns all categories from database....
+app.MapGet("/test", async (AppDBContext db) =>
+    await db.Categories.ToListAsync());
 
+// Get & Register all endpoints of controllers
+app.MapControllers();
 
-
+// --- FINALLY RUN API ---
 app.Run();
 
