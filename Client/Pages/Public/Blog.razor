@@ -1,6 +1,7 @@
 ﻿@page "/blog"
 @using Client.Components.Public.Shared
 @using Client.Components.Public.Blog
+@using Client.Services
 
 <Navbar />
 
@@ -11,26 +12,41 @@
             <h1 class="my-3">Blog</h1>
             <p>Click a category card to view its blog posts.</p>
              <div class="row">
-                @* CARD 1 *@
-                <div class="col-md-4">
-                    <CategoryCard />
-                </div>
-                @* CARD 2 *@
-                <div class="col-md-4">
-                    <CategoryCard />
-                </div>
-                @* CARD 3 *@
-                <div class="col-md-4">
-                    <CategoryCard />
-                </div>
+                @if (InMemoryDatabaseCache.categories.Count != 0)
+                {
+                    foreach (var category in InMemoryDatabaseCache.categories)
+                    {
+                        @* CARD 1 *@
+                        <div class="col-md-4">
+                            <CategoryCard />
+                        </div>       
+                    }
+                }
+
             </div> @* End row *@
         </div>
     </div>
 </main>
 
 <Footer />
-
+@implements IDisposable
 @code 
 {
+    //Inject database replaces old 
+    // @inject InMemoryDatabaseCache InMemoryDatabaseCache
 
+    [Inject] InMemoryDatabaseCache InMemoryDatabaseCache { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        InMemoryDatabaseCache.OnCategoriesDataChanged += StateHasChanged;
+        if (InMemoryDatabaseCache.categories == null)
+        {
+            await InMemoryDatabaseCache.GetCategoriesFromDatabaseAndCache();
+        }
+    }
+    // Avoid memory leak....
+    public void Dispose()
+    {
+        InMemoryDatabaseCache.OnCategoriesDataChanged -= StateHasChanged;
+    }
 }
