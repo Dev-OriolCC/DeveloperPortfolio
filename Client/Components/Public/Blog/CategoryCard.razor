@@ -1,14 +1,18 @@
-﻿<div class="card shadow mb-2">
-    <img src="@($"{APIEndpoints.ServerBaseUrl}/{Category.BlogImage}")" class="card-img-top" alt="Category thumbnail image" />
-    <div class="card-body">
-        <h3 class="card-title">@Category.Name</h3>
-        <p class="card-text">@Category.Description</p>
+﻿<div class="col-lg-3 mb-5 mb-lg-0">
+    <div class="section-heading mb-5 d-flex align-items-center">
+        <h2>@Category.Name</h2>
+        <div class="ml-auto">
+            <a class="btn btn-outline-dark btn-sm rounded" href="#">View all</a>
+        </div>
     </div>
-    <a href="/" class="btn btn-primary stretched-link">View posts</a>
+    <div class="entry2 mb-5">
+        <a href="single.html">
+            <img src="@($"{APIEndpoints.ServerBaseUrl}/{Category.BlogImage}")" alt="Image" class="img-fluid rounded">
+        </a>
+    </div>
 </div>
 
 @code
 {
     [Parameter] public Category Category { get; set; }
-
 }

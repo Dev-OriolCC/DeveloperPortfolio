@@ -1,7 +1,22 @@
 ﻿@page "/"
+@* Import database *@
+@using Client.Services
+@using Client.Components.Public.Blog
+
+<div class="site-wrap">
+    <div class="site-mobile-menu">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
 
 @* Navigation Bar *@
 <Client.Components.Public.Shared.Navbar />
+</div>
+
     
 <main class="d-flex flex-column w-100 min-vh-90 justify-content-center align-items-center overflow-auto bg-motherboard-dev">
     
@@ -28,5 +43,41 @@
     </div>
     
 </main>
+@* Categories Section *@
+@* Needs to be converted to a component *@
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <!-- Display Categories -->
+            @if(InMemoryDatabaseCache.categories.Count != 0)
+            {
+                @foreach (var category in InMemoryDatabaseCache.categories)
+               {
+                    <CategoryCard Category="category" />
+               }
+            }
+        </div>
+    </div>
+</div>
 
 <Client.Components.Public.Shared.Footer />
+
+@* Fetch from categories from db *@
+@implements IDisposable
+@code
+{
+    [Inject] InMemoryDatabaseCache InMemoryDatabaseCache { get; set;}
+    protected override async Task OnInitializedAsync()
+    {
+        InMemoryDatabaseCache.OnCategoriesDataChanged += StateHasChanged;
+        if (InMemoryDatabaseCache.categories == null)
+        {
+            await InMemoryDatabaseCache.GetCategoriesFromDatabaseAndCache();        
+        }
+        // Avoid memory link
+    }
+    public void Dispose()
+    {
+        InMemoryDatabaseCache.OnCategoriesDataChanged -= StateHasChanged;
+    }
+}

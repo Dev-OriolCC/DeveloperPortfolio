@@ -27,7 +27,7 @@ namespace Server.Controllers
         public async Task<IActionResult> Get()
         {
             // List<Category> categories = await _appDBContext.Categories.ToListAsync();
-           List<Category> categories = await _appDBContext.Categories.ToListAsync();
+            List<Category> categories = await _appDBContext.Categories.ToListAsync();
             // Return list of categories in json.
             return Ok(categories);
 
