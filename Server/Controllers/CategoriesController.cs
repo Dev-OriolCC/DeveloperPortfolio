@@ -33,5 +33,17 @@ namespace Server.Controllers
 
             //async (AppDBContext db) => await db.Categories.ToListAsync());
         }
+
+        // Get a single category by id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Category>> GetCategory(int id)
+        {
+            var categoryItem = await _appDBContext.Categories.FindAsync(id);
+            if(categoryItem == null)
+            {
+                return NotFound();
+            }
+            return categoryItem;
+        }
     }
 }
