@@ -6,7 +6,7 @@
 #if DEBUG
         internal const string ServerBaseUrl = "https://localhost:5003";
 #else
-        internal const string ServerBaseUrl = "https://name.azurewebsites.net";
+        internal const string ServerBaseUrl = "https://oriolblogserver.azurewebsites.net";
 #endif
 
         // Endpoint for category
