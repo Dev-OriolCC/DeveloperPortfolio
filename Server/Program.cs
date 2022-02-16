@@ -40,9 +40,16 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Change
+    app.UseDeveloperExceptionPage();
 }
+// Outside
+    app.UseSwagger();
+    app.UseSwaggerUI(swaggerUIOptions =>
+    {
+        swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Oriol Blog API");
+        swaggerUIOptions.RoutePrefix = string.Empty;
+    });
 
 app.UseHttpsRedirection();
 
