@@ -20,10 +20,10 @@
             <nav class="site-navigation text-center " role="navigation">
 
                 <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block mb-0">
-                    <li class="active"><a href="index.html">Homepage</a></li>
-                    <li><a href="category.html">Latest</a></li>
+                    <li><a href="@homePageUri" class="@(CheckPageActive(homePageUri) ? "active" : string.Empty)" >Homepage</a></li>
+                    <li><a href="@latestPageUri" class="@(CheckPageActive(latestPageUri) ? "active" : string.Empty)">Latest</a></li>
                     <li class="has-children">
-                        <a href="category.html">Categories</a>
+                        <a href="@categoryPageUri" class="@(CheckPageActive(categoryPageUri) ? "active" : string.Empty)">Categories</a>
                         <ul class="dropdown">
                             <li><a href="category.html">Programming</a></li>
                             <li><a href="category.html">Cybersecurity</a></li>
@@ -31,8 +31,8 @@
                             <li><a href="category.html">Mobile</a></li>
                         </ul>
                     </li>
-                    <li><a href="category.html">Contact</a></li>
-                    <li><a href="category.html">About</a></li>
+                    <li><a href="@contactPageUri" class="@(CheckPageActive(contactPageUri) ? "active" : string.Empty)">Contact</a></li>
+                    <li><a href="@aboutPageUri" class="@(CheckPageActive(aboutPageUri) ? "active" : string.Empty)">About</a></li>
                 </ul>
             </nav>
         </div>
@@ -45,6 +45,10 @@
     // Declare URLs
     private const string homePageUri = "/";
     private const string blogPageUri = "/blog";
+    private const string latestPageUri = "/latest";
+    private const string categoryPageUri = "/category";
+    private const string contactPageUri = "/contact";
+    private const string aboutPageUri = "/about";
 
     private bool CheckPageActive(string currentPageUri)
     {

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 // -- CLIENT-PROGRAM.CS 
+// ! Tasks...
+//! Add cards for posts [index]/individual category page/latest posts page
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 // Add Component
