@@ -24,5 +24,9 @@ namespace Shared.Models
         [Required]
         [MaxLength(1024)]
         public string Description { get; set; }
+
+        // Relationship to Post
+        public List<Post> Posts { get; set; }
+
     }
 }
