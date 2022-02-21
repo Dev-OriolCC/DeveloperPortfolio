@@ -7,7 +7,7 @@ var MyAllowSpeceficOrigins = "CorsPolicy";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 // Add permission for CORS
 builder.Services.AddCors(options =>
