@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Shared.Models;
@@ -17,13 +19,15 @@ namespace Server.Controllers
     {
         private readonly AppDBContext _appDBContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IMapper _mapper;
 
         // Constructor = Add AppDBContext (import + asign)
         // Add IWebHostEnvironment [For Delete]
-        public PostsController(AppDBContext appDBContext, IWebHostEnvironment webHostEnvironment)
+        public PostsController(AppDBContext appDBContext, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _appDBContext = appDBContext;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
         #region Crud Methods
         // Create GET Request return all posts from db.
@@ -49,11 +53,11 @@ namespace Server.Controllers
 
         // Create a post
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Post postToCreate)
+        public async Task<IActionResult> Create([FromBody] PostDTO postToCreateDTO)
         {
             try
             {
-                if (postToCreate == null) // Form Empty
+                if (postToCreateDTO == null) // Form Empty
                 {
                     return BadRequest(ModelState);
                 }
@@ -61,6 +65,9 @@ namespace Server.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                // MAP
+                Post postToCreate = _mapper.Map<Post>(postToCreateDTO);
+
                 if (postToCreate.IsPublished == true)
                 {
                     postToCreate.PublishDate = DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm");
@@ -85,11 +92,11 @@ namespace Server.Controllers
         }
         // Update a post
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Post postToUpdate)
+        public async Task<IActionResult> Update(int id, [FromBody] PostDTO postToUpdateDTO)
         {
             try
             {
-                if (id < 1 || postToUpdate == null || id != postToUpdate.PostID ) 
+                if (id < 1 || postToUpdateDTO == null || id != postToUpdateDTO.PostID ) 
                 {
                     return BadRequest(ModelState);
                 }
@@ -104,10 +111,23 @@ namespace Server.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                // MAP
+                Post postToUpdate = _mapper.Map<Post>(postToUpdateDTO);
 
-                if (oldPost.IsPublished == false && postToUpdate.IsPublished == true)
+                if (postToUpdate.IsPublished == true)
                 {
-                    postToUpdate.PublishDate = DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm");
+                    if (oldPost.IsPublished == false)
+                    {
+                        postToUpdate.PublishDate = DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm");
+                    }
+                    else
+                    {
+                        postToUpdate.PublishDate = oldPost.PublishDate;
+                    }
+                }
+                else
+                {
+                    postToUpdate.PublishDate = string.Empty;
                 }
 
                 _appDBContext.Entry(oldPost).State = EntityState.Detached;

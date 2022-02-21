@@ -28,6 +28,9 @@ builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); // THIS IS THE WAY
 // Other configs....
 builder.Services.AddEndpointsApiExplorer();
+// DTO
+builder.Services.AddAutoMapper(typeof(DTOMappings));
+//
 builder.Services.AddSwaggerGen();
 
 // Convert route endpoints to lowercase.
@@ -43,6 +46,7 @@ if (app.Environment.IsDevelopment())
     // Change
     app.UseDeveloperExceptionPage();
 }
+
 // Outside
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUIOptions =>
